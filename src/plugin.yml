@@ -1,0 +1,3 @@
+name: MineralDectector
+main: com.lostaris.bukkit.MineralDectector.MineralDectector
+version: 0.1
