@@ -1,10 +1,14 @@
 package com.lostaris.bukkit.MineralScanner;
 
+import java.util.Vector;
+
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerListener;
+import org.bukkit.event.player.PlayerMoveEvent;
 
 /**
  * Handle events for all Player related events
@@ -18,13 +22,23 @@ public class MineralScannerPlayerListener extends PlayerListener {
         plugin = instance;
     }
     
-    // tiggered when the item in a players hand changes
+    // triggered when the item in a players hand changes
     public void onItemHeldChange (PlayerItemHeldEvent event) {
     	
     }
-
-	public MineralScanner getPlugin() {
-		return plugin;
+    
+    // triggered when a player moves
+	public void onPlayerMove (PlayerMoveEvent event) {
+		player = event.getPlayer();
+		player.sendMessage("standing on " + blockUnderPlayer().getType());
+	}
+	
+	public Block blockUnderPlayer() {
+		Location loc = player.getLocation();
+		Block blockUnder = player.getWorld().getBlockAt((int)Math.floor(loc.getX() + 0.5D),
+				(int)Math.floor(loc.getY() - 0.5D), (int)Math.floor(loc.getZ() + 0.5D));		
+		return blockUnder;
+		
 	}
 
     //Insert Player related code here
@@ -69,6 +83,10 @@ public class MineralScannerPlayerListener extends PlayerListener {
 	      }
 	    }
 	    return dir;
+	}
+	
+	public MineralScanner getPlugin() {
+		return plugin;
 	}
 }
 
