@@ -28,6 +28,7 @@ public class MineralScanner extends JavaPlugin {
         // NOTE: Event registration should be done in onEnable not here as all events are unregistered when a plugin is disabled
     }   
 
+    //This is used to enable the plugin via a plugin manager.
     public void onEnable() {
         // TODO: Place any custom enable code here including the registration of any events
 
