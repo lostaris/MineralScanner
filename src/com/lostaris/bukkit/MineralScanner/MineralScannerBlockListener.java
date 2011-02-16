@@ -1,4 +1,4 @@
-package com.lostaris.bukkit.MineralDetector;
+package com.lostaris.bukkit.MineralScanner;
 
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -11,14 +11,14 @@ import org.bukkit.event.block.BlockPhysicsEvent;
  * MineralDetector block listener
  * @author Lostaris
  */
-public class MineralDetectorBlockListener extends BlockListener {
-    private final MineralDetector plugin;
+public class MineralScannerBlockListener extends BlockListener {
+    private final MineralScanner plugin;
 
-    public MineralDetectorBlockListener(final MineralDetector plugin) {
+    public MineralScannerBlockListener(final MineralScanner plugin) {
         this.plugin = plugin;
     }
 
-	public MineralDetector getPlugin() {
+	public MineralScanner getPlugin() {
 		return plugin;
 	}
 

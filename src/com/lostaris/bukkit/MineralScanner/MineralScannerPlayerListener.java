@@ -1,4 +1,4 @@
-package com.lostaris.bukkit.MineralDetector;
+package com.lostaris.bukkit.MineralScanner;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -10,11 +10,11 @@ import org.bukkit.event.player.PlayerListener;
  * Handle events for all Player related events
  * @author Lostaris
  */
-public class MineralDetectorPlayerListener extends PlayerListener {
-    private final MineralDetector plugin;
+public class MineralScannerPlayerListener extends PlayerListener {
+    private final MineralScanner plugin;
     private Player player;
 
-    public MineralDetectorPlayerListener(MineralDetector instance) {
+    public MineralScannerPlayerListener(MineralScanner instance) {
         plugin = instance;
     }
     
@@ -22,7 +22,7 @@ public class MineralDetectorPlayerListener extends PlayerListener {
     	
     }
 
-	public MineralDetector getPlugin() {
+	public MineralScanner getPlugin() {
 		return plugin;
 	}
 

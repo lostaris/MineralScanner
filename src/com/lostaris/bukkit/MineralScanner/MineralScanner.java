@@ -1,4 +1,4 @@
-package com.lostaris.bukkit.MineralDetector;
+package com.lostaris.bukkit.MineralScanner;
 
 import java.io.File;
 import java.util.HashMap;
@@ -16,12 +16,12 @@ import org.bukkit.plugin.PluginManager;
  *
  * @author Lostaris
  */
-public class MineralDetector extends JavaPlugin {
-    private final MineralDetectorPlayerListener playerListener = new MineralDetectorPlayerListener(this);
+public class MineralScanner extends JavaPlugin {
+    private final MineralScannerPlayerListener playerListener = new MineralScannerPlayerListener(this);
     //private final MineralDetectorBlockListener blockListener = new MineralDetectorBlockListener(this);
     private final HashMap<Player, Boolean> debugees = new HashMap<Player, Boolean>();
 
-    public MineralDetector(PluginLoader pluginLoader, Server instance, PluginDescriptionFile desc, File folder, File plugin, ClassLoader cLoader) {
+    public MineralScanner(PluginLoader pluginLoader, Server instance, PluginDescriptionFile desc, File folder, File plugin, ClassLoader cLoader) {
         super(pluginLoader, instance, desc, folder, plugin, cLoader);
         // TODO: Place any custom initialisation code here
 

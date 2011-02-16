@@ -1,3 +1,3 @@
-name: MineralDectector
-main: com.lostaris.bukkit.MineralDectector.MineralDectector
+name: MineralScanner
+main: com.lostaris.bukkit.MineralScanner.MineralScanner
 version: 0.1
