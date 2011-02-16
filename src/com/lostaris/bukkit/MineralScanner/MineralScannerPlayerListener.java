@@ -18,6 +18,7 @@ public class MineralScannerPlayerListener extends PlayerListener {
         plugin = instance;
     }
     
+    // tiggered when the item in a players hand changes
     public void onItemHeldChange (PlayerItemHeldEvent event) {
     	
     }
