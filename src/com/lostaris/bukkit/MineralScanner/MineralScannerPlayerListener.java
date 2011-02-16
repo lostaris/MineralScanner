@@ -45,36 +45,36 @@ public class MineralScannerPlayerListener extends PlayerListener {
 	public String direction() {
 		int r = (int)Math.abs((player.getLocation().getYaw() - 90.0F) % 360.0F);
 	    String dir;
-	    if (r < 23) { dir = "N";
+	    if (r < 23) { dir = "NORTH";
 	    }
 	    else
 	    {
-	      if (r < 68) { dir = "NE";
+	      if (r < 68) { dir = "NORTH_EAST";
 	      }
 	      else
 	      {
-	        if (r < 113) { dir = "E";
+	        if (r < 113) { dir = "EAST";
 	        }
 	        else
 	        {
-	          if (r < 158) { dir = "SE";
+	          if (r < 158) { dir = "SOUTH_EAST";
 	          }
 	          else
 	          {
-	            if (r < 203) { dir = "S";
+	            if (r < 203) { dir = "SOUTH";
 	            }
 	            else
 	            {
-	              if (r < 248) { dir = "SW";
+	              if (r < 248) { dir = "SOUTH_WEST";
 	              }
 	              else
 	              {
-	                if (r < 293) { dir = "W";
+	                if (r < 293) { dir = "WEST";
 	                }
 	                else
 	                {
-	                  if (r < 338) dir = "NW"; else
-	                    dir = "N"; 
+	                  if (r < 338) dir = "NORTH_WEST"; else
+	                    dir = "NORTH"; 
 	                }
 	              }
 	            }
