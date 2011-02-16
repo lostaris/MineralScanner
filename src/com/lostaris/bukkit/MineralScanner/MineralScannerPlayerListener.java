@@ -35,8 +35,8 @@ public class MineralScannerPlayerListener extends PlayerListener {
 	
 	public Block blockUnderPlayer() {
 		Location loc = player.getLocation();
-		Block blockUnder = player.getWorld().getBlockAt((int)Math.floor(loc.getX() + 0.5D),
-				(int)Math.floor(loc.getY() - 0.5D), (int)Math.floor(loc.getZ() + 0.5D));		
+		Block blockUnder = player.getWorld().getBlockAt((int)Math.floor(loc.getX()),
+				(int)Math.floor(loc.getY() - 0.5D), (int)Math.floor(loc.getZ()));		
 		return blockUnder;
 		
 	}
