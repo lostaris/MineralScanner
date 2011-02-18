@@ -95,17 +95,17 @@ public class MineralScannerPlayerListener extends BlockListener {
 			if (r < 68) {
 				dir = "NORTH_EAST";
 				//printCone(diagonal("NORTH", "EAST"));
-				isMineral(diagonal("NORTH", "EAST"));
+				isMineral(diagonal("NORTH", "WEST"));
 			} else {
 				if (r < 113) {
 					dir = "EAST";
 					//printCone(eastWest(dir));
-					isMineral(eastWest(dir));
+					isMineral(eastWest("WEST"));
 				} else {
 					if (r < 158) { 
 						dir = "SOUTH_EAST";
 						//printCone(diagonal("SOUTH", "EAST"));
-						isMineral(diagonal("SOUTH", "EAST"));
+						isMineral(diagonal("SOUTH", "WEST"));
 					} else {
 						if (r < 203) {
 							dir = "SOUTH";
@@ -115,18 +115,18 @@ public class MineralScannerPlayerListener extends BlockListener {
 							if (r < 248) {
 								dir = "SOUTH_WEST";
 								//printCone(diagonal("SOUTH", "WEST"));
-								isMineral(diagonal("SOUTH", "WEST"));
+								isMineral(diagonal("SOUTH", "EAST"));
 							} else {
 								if (r < 293) {
 									dir = "WEST";
 									//printCone(eastWest(dir));
-									isMineral(eastWest(dir));
+									isMineral(eastWest("EAST"));
 								}
 								else {
 									if (r < 338) {
 										dir = "NORTH_WEST";
 										//printCone(diagonal("NORTH", "WEST"));
-										isMineral(diagonal("NORTH", "WEST"));
+										isMineral(diagonal("NORTH", "EAST"));
 									} else {
 										dir = "NORTH";
 										//printCone(northSouth(dir));
