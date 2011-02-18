@@ -6,47 +6,35 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerChatEvent;
-import org.bukkit.event.player.PlayerItemHeldEvent;
-import org.bukkit.event.player.PlayerListener;
-import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.block.BlockListener;
+import org.bukkit.event.block.BlockRightClickEvent;
 
 /**
  * Handle events for all Player related events
  * @author Lostaris
  */
-public class MineralScannerPlayerListener extends PlayerListener {
+public class MineralScannerPlayerListener extends BlockListener {
 	private final MineralScanner plugin;
 	private Player player;
 
 	public MineralScannerPlayerListener(MineralScanner instance) {
 		plugin = instance;
 	}
-
-	// triggered when the item in a players hand changes
-	public void onItemHeldChange (PlayerItemHeldEvent event) {
-
-	}
-
-	// triggered when a player moves
-	public void onPlayerMove (PlayerMoveEvent event) {
+	
+	public void onBlockRightClick(BlockRightClickEvent event) {
 		player = event.getPlayer();
-		//player.sendMessage("standing on " + blockUnderPlayer().getType());
-		player.sendMessage("facing " + blockFacing().getType());
+		if (player.getItemInHand().getTypeId() != 345) {
+			return;
+		} else {
+			getCone();
+		}
 	}
-
-	public Block blockUnderPlayer() {
-		Location loc = player.getLocation();
-		Block blockUnder = player.getWorld().getBlockAt((int)Math.floor(loc.getX()),
-				(int)Math.floor(loc.getY() - 0.5D), (int)Math.floor(loc.getZ()));		
-		return blockUnder;		
-	}
-
-	public Block blockFacing() {
+	
+	public Block blockFacing(String dir) {
 		Location loc = player.getLocation();
 		Block facing = player.getWorld().getBlockAt((int)Math.floor(loc.getX()),
-				(int)Math.floor(loc.getY()), (int)Math.floor(loc.getZ())).getFace(BlockFace.valueOf(direction()));
-		return facing;		
+				(int)Math.floor(loc.getY()), (int)Math.floor(loc.getZ())).getFace(BlockFace.valueOf(dir));
+		return facing;	
 	}
 	
 	public Block diagFacing(String dir1, String dir2) {
@@ -54,31 +42,6 @@ public class MineralScannerPlayerListener extends PlayerListener {
 		Block facing = player.getWorld().getBlockAt((int)Math.floor(loc.getX()),
 				(int)Math.floor(loc.getY()), (int)Math.floor(loc.getZ())).getFace(BlockFace.valueOf(dir1 + "_" + dir2));
 		return facing;
-	}
-
-	public ArrayList<Block> scanArea() {
-		ArrayList<Block> scanCone = new ArrayList<Block>();
-		Block feet = blockFacing();
-		Block head = blockFacing().getFace(BlockFace.UP);
-		Block aboveHead = head.getFace(BlockFace.UP);
-		scanCone.add(feet);
-		scanCone.add(head);
-		scanCone.add(aboveHead);
-
-		// next row
-		scanCone.add(feet.getFace(BlockFace.valueOf(direction())));
-		scanCone.add(head.getFace(BlockFace.valueOf(direction())));
-		scanCone.add(aboveHead.getFace(BlockFace.valueOf(direction())));
-
-		return scanCone;		
-	}
-
-	public void printScanArea(ArrayList<Block> blocks) {
-		player.sendMessage("In the direction you are facing there is:");
-		player.sendMessage("At foot height "+ blocks.get(0).getType() +" at head height "
-				+ blocks.get(1).getType() + " and above your head " + blocks.get(2).getType());
-		player.sendMessage("Next row: At foot height "+ blocks.get(3).getType() +" at head height "
-				+ blocks.get(4).getType() + " and above your head " + blocks.get(5).getType());
 	}
 
 	public String direction() {
@@ -120,6 +83,63 @@ public class MineralScannerPlayerListener extends PlayerListener {
 		}
 		return dir;
 	}
+
+	public void getCone() {
+		int r = (int)Math.abs((player.getLocation().getYaw() - 90.0F) % 360.0F);
+		String dir;
+		if (r < 23) {
+			dir = "NORTH";
+			//printCone(northSouth(dir));
+			isMineral(northSouth(dir));
+		} else {
+			if (r < 68) {
+				dir = "NORTH_EAST";
+				//printCone(diagonal("NORTH", "EAST"));
+				isMineral(diagonal("NORTH", "EAST"));
+			} else {
+				if (r < 113) {
+					dir = "EAST";
+					//printCone(eastWest(dir));
+					isMineral(eastWest(dir));
+				} else {
+					if (r < 158) { 
+						dir = "SOUTH_EAST";
+						//printCone(diagonal("SOUTH", "EAST"));
+						isMineral(diagonal("SOUTH", "EAST"));
+					} else {
+						if (r < 203) {
+							dir = "SOUTH";
+							//printCone(northSouth(dir));
+							isMineral(northSouth(dir));
+						} else {
+							if (r < 248) {
+								dir = "SOUTH_WEST";
+								//printCone(diagonal("SOUTH", "WEST"));
+								isMineral(diagonal("SOUTH", "WEST"));
+							} else {
+								if (r < 293) {
+									dir = "WEST";
+									//printCone(eastWest(dir));
+									isMineral(eastWest(dir));
+								}
+								else {
+									if (r < 338) {
+										dir = "NORTH_WEST";
+										//printCone(diagonal("NORTH", "WEST"));
+										isMineral(diagonal("NORTH", "WEST"));
+									} else {
+										dir = "NORTH";
+										//printCone(northSouth(dir));
+										isMineral(northSouth(dir));
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 	
 	public ArrayList<Block> diagonal(String dir1, String dir2) {
 		ArrayList<Block> scanCone = new ArrayList<Block>();
@@ -132,10 +152,109 @@ public class MineralScannerPlayerListener extends PlayerListener {
 		scanCone.add(aboveHead);
 
 		// next row
-		scanCone.add(feet.getFace(BlockFace.valueOf(dir)));
-		scanCone.add(head.getFace(BlockFace.valueOf(dir)));
-		scanCone.add(aboveHead.getFace(BlockFace.valueOf(dir)));
-		return null;		
+		Block feetNext = feet.getFace(BlockFace.valueOf(dir));
+		Block headNext = head.getFace(BlockFace.valueOf(dir));
+		Block aboveNext = aboveHead.getFace(BlockFace.valueOf(dir));
+		scanCone.add(feetNext);
+		scanCone.add(headNext);
+		scanCone.add(aboveNext);
+		
+		// expand out
+		scanCone.add(feetNext.getFace(BlockFace.valueOf(dir1)));
+		scanCone.add(feetNext.getFace(BlockFace.valueOf(dir2)));
+		scanCone.add(headNext.getFace(BlockFace.valueOf(dir1)));
+		scanCone.add(headNext.getFace(BlockFace.valueOf(dir2)));
+		scanCone.add(aboveNext.getFace(BlockFace.valueOf(dir1)));
+		scanCone.add(aboveNext.getFace(BlockFace.valueOf(dir2)));
+		// last one
+		scanCone.add(headNext.getFace(BlockFace.valueOf(dir)));
+		
+		return scanCone;		
+	}
+	
+	public ArrayList<Block> northSouth(String dir) {
+		ArrayList<Block> scanCone = new ArrayList<Block>();
+		Block feet = blockFacing(dir);
+		Block head = feet.getFace(BlockFace.UP);
+		Block aboveHead = head.getFace(BlockFace.UP);
+		scanCone.add(feet);
+		scanCone.add(head);
+		scanCone.add(aboveHead);
+		
+		// next row
+		Block feetNext = feet.getFace(BlockFace.valueOf(dir));
+		Block headNext = head.getFace(BlockFace.valueOf(dir));
+		Block aboveNext = aboveHead.getFace(BlockFace.valueOf(dir));
+		scanCone.add(feetNext);
+		scanCone.add(headNext);
+		scanCone.add(aboveNext);
+		
+		// expand out
+		scanCone.add(feetNext.getFace(BlockFace.EAST));
+		scanCone.add(feetNext.getFace(BlockFace.WEST));
+		scanCone.add(headNext.getFace(BlockFace.EAST));
+		scanCone.add(headNext.getFace(BlockFace.WEST));
+		scanCone.add(aboveNext.getFace(BlockFace.EAST));
+		scanCone.add(aboveNext.getFace(BlockFace.WEST));
+		
+		// last row
+		scanCone.add(headNext.getFace(BlockFace.valueOf(dir)));
+		scanCone.add(headNext.getFace(BlockFace.valueOf(dir + "_WEST")));
+		scanCone.add(headNext.getFace(BlockFace.valueOf(dir + "_EAST")));
+		
+		return scanCone;
+	}
+	
+	public ArrayList<Block> eastWest(String dir) {
+		ArrayList<Block> scanCone = new ArrayList<Block>();
+		Block feet = blockFacing(dir);
+		Block head = feet.getFace(BlockFace.UP);
+		Block aboveHead = head.getFace(BlockFace.UP);
+		scanCone.add(feet);
+		scanCone.add(head);
+		scanCone.add(aboveHead);
+		
+		// next row
+		Block feetNext = feet.getFace(BlockFace.valueOf(dir));
+		Block headNext = head.getFace(BlockFace.valueOf(dir));
+		Block aboveNext = aboveHead.getFace(BlockFace.valueOf(dir));
+		scanCone.add(feetNext);
+		scanCone.add(headNext);
+		scanCone.add(aboveNext);
+		
+		// expand out
+		scanCone.add(feetNext.getFace(BlockFace.NORTH));
+		scanCone.add(feetNext.getFace(BlockFace.SOUTH));
+		scanCone.add(headNext.getFace(BlockFace.NORTH));
+		scanCone.add(headNext.getFace(BlockFace.SOUTH));
+		scanCone.add(aboveNext.getFace(BlockFace.NORTH));
+		scanCone.add(aboveNext.getFace(BlockFace.SOUTH));
+		
+		// last row
+		scanCone.add(headNext.getFace(BlockFace.valueOf(dir)));
+		scanCone.add(headNext.getFace(BlockFace.valueOf("NORTH_" +dir)));
+		scanCone.add(headNext.getFace(BlockFace.valueOf("SOUTH_" + dir)));
+		
+		return scanCone;
+	}
+	
+	public void printCone(ArrayList<Block> cone) {
+		StringBuilder string = new StringBuilder();
+		for(Block i: cone) {
+			string.append(", " + i.getType());
+		}
+		player.sendMessage(string.toString());
+	}
+	
+	public void isMineral(ArrayList<Block> cone) {
+		for(Block i: cone) {
+			if (i.getTypeId() == 14 || i.getTypeId() == 15 || i.getTypeId() == 16
+					|| i.getTypeId() == 21 || i.getTypeId() == 56 || i.getTypeId() == 73
+					|| i.getTypeId() == 74) {
+				player.sendMessage("BEEP");
+				return;
+			}
+		}
 	}
 
 	public void setPlayer(Player player) {
