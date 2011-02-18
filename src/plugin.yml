@@ -1,3 +1,7 @@
 name: MineralScanner
 main: com.lostaris.bukkit.MineralScanner.MineralScanner
 version: 0.1
+commands:
+    scan:
+        description: lol
+        usage: |

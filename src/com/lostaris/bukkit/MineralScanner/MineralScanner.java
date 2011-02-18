@@ -1,11 +1,15 @@
 package com.lostaris.bukkit.MineralScanner;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.Server;
 import org.bukkit.event.Event.Priority;
 import org.bukkit.event.Event;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginLoader;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -35,7 +39,7 @@ public class MineralScanner extends JavaPlugin {
         // Register our events
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvent(Event.Type.PLAYER_ITEM_HELD , playerListener, Priority.Monitor, this);
-        pm.registerEvent(Event.Type.PLAYER_MOVE , playerListener, Priority.Monitor, this);
+        //pm.registerEvent(Event.Type.PLAYER_MOVE , playerListener, Priority.Monitor, this);
 
         // EXAMPLE: Custom code, here we just output some info so we can check all is well
         PluginDescriptionFile pdfFile = this.getDescription();
@@ -49,6 +53,24 @@ public class MineralScanner extends JavaPlugin {
 
         // EXAMPLE: Custom code, here we just output some info so we can check all is well
         System.out.println("Goodbye world!");
+    }
+    
+    public boolean onCommand(org.bukkit.command.CommandSender sender,
+			org.bukkit.command.Command command, String commandLabel, String[] args) {
+    	Player player = null;
+		// if the command sender is a player
+		if(sender instanceof Player) {
+			player = (Player) sender;
+		}
+		playerListener.setPlayer(player);
+		//String[] split = args;
+		String commandName = command.getName().toLowerCase();
+		if (commandName.equals("scan")) {
+			ArrayList<Block> blocks = playerListener.scanArea();
+			playerListener.printScanArea(blocks);
+		}
+    
+    	return false;
     }
     
     public boolean isDebugging(final Player player) {
