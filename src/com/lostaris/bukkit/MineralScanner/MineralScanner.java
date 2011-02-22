@@ -2,6 +2,7 @@ package com.lostaris.bukkit.MineralScanner;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.logging.Logger;
 import org.bukkit.entity.Player;
 import org.bukkit.Server;
 import org.bukkit.event.Event.Priority;
@@ -20,13 +21,14 @@ public class MineralScanner extends JavaPlugin {
     private final MineralScannerPlayerListener playerListener = new MineralScannerPlayerListener(this);
     //private final MineralDetectorBlockListener blockListener = new MineralDetectorBlockListener(this);
     private final HashMap<Player, Boolean> debugees = new HashMap<Player, Boolean>();
+    public static final Logger log = Logger.getLogger("Minecraft");
 
     public MineralScanner(PluginLoader pluginLoader, Server instance, PluginDescriptionFile desc, File folder, File plugin, ClassLoader cLoader) {
         super(pluginLoader, instance, desc, folder, plugin, cLoader);
         // TODO: Place any custom initialisation code here
 
         // NOTE: Event registration should be done in onEnable not here as all events are unregistered when a plugin is disabled
-    }   
+    }
 
     //This is used to enable the plugin via a plugin manager.
     public void onEnable() {
@@ -62,6 +64,7 @@ public class MineralScanner extends JavaPlugin {
 		//String[] split = args;
 		String commandName = command.getName().toLowerCase();
 		if (commandName.equals("scan")) {
+			log.info("lol");
 			//ArrayList<Block> blocks = playerListener.scanArea();
 			//playerListener.printScanArea(blocks);
 			playerListener.getCone();
