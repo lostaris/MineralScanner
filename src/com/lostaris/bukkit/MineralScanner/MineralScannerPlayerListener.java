@@ -147,17 +147,21 @@ public class MineralScannerPlayerListener extends BlockListener {
 		Block feet = diagFacing(dir1, dir2);
 		Block head = feet.getFace(BlockFace.UP);
 		Block aboveHead = head.getFace(BlockFace.UP);
+		Block belowFeet = feet.getFace(BlockFace.DOWN);
 		scanCone.add(feet);
 		scanCone.add(head);
 		scanCone.add(aboveHead);
+		scanCone.add(belowFeet);
 
 		// next row
 		Block feetNext = feet.getFace(BlockFace.valueOf(dir));
 		Block headNext = head.getFace(BlockFace.valueOf(dir));
 		Block aboveNext = aboveHead.getFace(BlockFace.valueOf(dir));
+		Block belowNext = belowFeet.getFace(BlockFace.valueOf(dir));
 		scanCone.add(feetNext);
 		scanCone.add(headNext);
 		scanCone.add(aboveNext);
+		scanCone.add(belowNext);
 		
 		// expand out
 		scanCone.add(feetNext.getFace(BlockFace.valueOf(dir1)));
@@ -166,8 +170,12 @@ public class MineralScannerPlayerListener extends BlockListener {
 		scanCone.add(headNext.getFace(BlockFace.valueOf(dir2)));
 		scanCone.add(aboveNext.getFace(BlockFace.valueOf(dir1)));
 		scanCone.add(aboveNext.getFace(BlockFace.valueOf(dir2)));
+		scanCone.add(feetNext.getFace(BlockFace.valueOf(dir1)));
+		scanCone.add(feetNext.getFace(BlockFace.valueOf(dir2)));
+		
 		// last one
 		scanCone.add(headNext.getFace(BlockFace.valueOf(dir)));
+		scanCone.add(feetNext.getFace(BlockFace.valueOf(dir)));
 		
 		return scanCone;		
 	}
@@ -177,17 +185,21 @@ public class MineralScannerPlayerListener extends BlockListener {
 		Block feet = blockFacing(dir);
 		Block head = feet.getFace(BlockFace.UP);
 		Block aboveHead = head.getFace(BlockFace.UP);
+		Block belowFeet = feet.getFace(BlockFace.DOWN);
 		scanCone.add(feet);
 		scanCone.add(head);
 		scanCone.add(aboveHead);
+		scanCone.add(belowFeet);
 		
 		// next row
 		Block feetNext = feet.getFace(BlockFace.valueOf(dir));
 		Block headNext = head.getFace(BlockFace.valueOf(dir));
 		Block aboveNext = aboveHead.getFace(BlockFace.valueOf(dir));
+		Block belowNext = belowFeet.getFace(BlockFace.valueOf(dir));
 		scanCone.add(feetNext);
 		scanCone.add(headNext);
 		scanCone.add(aboveNext);
+		scanCone.add(belowNext);
 		
 		// expand out
 		scanCone.add(feetNext.getFace(BlockFace.EAST));
@@ -196,11 +208,16 @@ public class MineralScannerPlayerListener extends BlockListener {
 		scanCone.add(headNext.getFace(BlockFace.WEST));
 		scanCone.add(aboveNext.getFace(BlockFace.EAST));
 		scanCone.add(aboveNext.getFace(BlockFace.WEST));
+		scanCone.add(belowNext.getFace(BlockFace.EAST));
+		scanCone.add(belowNext.getFace(BlockFace.WEST));
 		
 		// last row
 		scanCone.add(headNext.getFace(BlockFace.valueOf(dir)));
 		scanCone.add(headNext.getFace(BlockFace.valueOf(dir + "_WEST")));
 		scanCone.add(headNext.getFace(BlockFace.valueOf(dir + "_EAST")));
+		scanCone.add(feetNext.getFace(BlockFace.valueOf(dir)));
+		scanCone.add(feetNext.getFace(BlockFace.valueOf(dir + "_WEST")));
+		scanCone.add(feetNext.getFace(BlockFace.valueOf(dir + "_EAST")));
 		
 		return scanCone;
 	}
@@ -210,17 +227,21 @@ public class MineralScannerPlayerListener extends BlockListener {
 		Block feet = blockFacing(dir);
 		Block head = feet.getFace(BlockFace.UP);
 		Block aboveHead = head.getFace(BlockFace.UP);
+		Block belowFeet = feet.getFace(BlockFace.DOWN);
 		scanCone.add(feet);
 		scanCone.add(head);
 		scanCone.add(aboveHead);
+		scanCone.add(belowFeet);
 		
 		// next row
 		Block feetNext = feet.getFace(BlockFace.valueOf(dir));
 		Block headNext = head.getFace(BlockFace.valueOf(dir));
 		Block aboveNext = aboveHead.getFace(BlockFace.valueOf(dir));
+		Block belowNext = belowFeet.getFace(BlockFace.valueOf(dir));
 		scanCone.add(feetNext);
 		scanCone.add(headNext);
 		scanCone.add(aboveNext);
+		scanCone.add(belowNext);
 		
 		// expand out
 		scanCone.add(feetNext.getFace(BlockFace.NORTH));
@@ -229,11 +250,16 @@ public class MineralScannerPlayerListener extends BlockListener {
 		scanCone.add(headNext.getFace(BlockFace.SOUTH));
 		scanCone.add(aboveNext.getFace(BlockFace.NORTH));
 		scanCone.add(aboveNext.getFace(BlockFace.SOUTH));
+		scanCone.add(feetNext.getFace(BlockFace.NORTH));
+		scanCone.add(feetNext.getFace(BlockFace.SOUTH));
 		
 		// last row
 		scanCone.add(headNext.getFace(BlockFace.valueOf(dir)));
 		scanCone.add(headNext.getFace(BlockFace.valueOf("NORTH_" +dir)));
 		scanCone.add(headNext.getFace(BlockFace.valueOf("SOUTH_" + dir)));
+		scanCone.add(feetNext.getFace(BlockFace.valueOf(dir)));
+		scanCone.add(feetNext.getFace(BlockFace.valueOf("NORTH_" +dir)));
+		scanCone.add(feetNext.getFace(BlockFace.valueOf("SOUTH_" + dir)));
 		
 		return scanCone;
 	}
