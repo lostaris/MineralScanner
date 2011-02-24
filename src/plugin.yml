@@ -1,7 +1,7 @@
 name: MineralScanner
 main: com.lostaris.bukkit.MineralScanner.MineralScanner
-version: 1.0
+version: 1.1
 commands:
     scan:
-        description: lol
+        description: Scans for minerals and types beep in chat is there is something.
         usage: |

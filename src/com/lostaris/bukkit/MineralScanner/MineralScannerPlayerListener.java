@@ -1,34 +1,43 @@
 package com.lostaris.bukkit.MineralScanner;
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
-import org.bukkit.event.block.BlockListener;
-import org.bukkit.event.block.BlockRightClickEvent;
+import org.bukkit.event.player.PlayerItemEvent;
+import org.bukkit.event.player.PlayerListener;
 
 /**
  * Handle events for all Player related events
  * @author Lostaris
  */
-public class MineralScannerPlayerListener extends BlockListener {
+public class MineralScannerPlayerListener extends PlayerListener {
 	private final MineralScanner plugin;
 	private Player player;
+	public static final Logger log = Logger.getLogger("Minecraft");
 
 	public MineralScannerPlayerListener(MineralScanner instance) {
 		plugin = instance;
 	}
 	
-	public void onBlockRightClick(BlockRightClickEvent event) {
+	public void onPlayerItem(PlayerItemEvent event) {
 		player = event.getPlayer();
-		if (player.getItemInHand().getTypeId() != 345) {
+		if (player.getItemInHand().getTypeId() != Integer.valueOf(getScanItem())) {
 			return;
 		} else {
 			getCone();
 		}
 	}
+	
+	public String getScanItem() {
+		String item = plugin.getConfig().get("scanItem");
+		return item; 
+	}
+	
+	//public 
 	
 	public Block blockFacing(String dir) {
 		Location loc = player.getLocation();
@@ -42,46 +51,6 @@ public class MineralScannerPlayerListener extends BlockListener {
 		Block facing = player.getWorld().getBlockAt((int)Math.floor(loc.getX()),
 				(int)Math.floor(loc.getY()), (int)Math.floor(loc.getZ())).getFace(BlockFace.valueOf(dir1 + "_" + dir2));
 		return facing;
-	}
-
-	public String direction() {
-		int r = (int)Math.abs((player.getLocation().getYaw() - 90.0F) % 360.0F);
-		String dir;
-		if (r < 23) {
-			dir = "NORTH"; 
-		} else {
-			if (r < 68) {
-				dir = "NORTH_EAST";
-			} else {
-				if (r < 113) {
-					dir = "EAST";
-				} else {
-					if (r < 158) { 
-						dir = "SOUTH_EAST"; 
-					} else {
-						if (r < 203) {
-							dir = "SOUTH";
-						} else {
-							if (r < 248) {
-								dir = "SOUTH_WEST";
-							} else {
-								if (r < 293) {
-									dir = "WEST";
-								}
-								else {
-									if (r < 338) {
-										dir = "NORTH_WEST"; 
-									} else {
-										dir = "NORTH"; 
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		return dir;
 	}
 
 	public void getCone() {
@@ -274,10 +243,8 @@ public class MineralScannerPlayerListener extends BlockListener {
 	
 	public void isMineral(ArrayList<Block> cone) {
 		for(Block i: cone) {
-			if (i.getTypeId() == 14 || i.getTypeId() == 15 || i.getTypeId() == 16
-					|| i.getTypeId() == 21 || i.getTypeId() == 56 || i.getTypeId() == 73
-					|| i.getTypeId() == 74) {
-				player.sendMessage("BEEP");
+			if (plugin.getBlocks().contains(i.getTypeId())) {
+				player.sendMessage("§6BEEP");
 				return;
 			}
 		}
