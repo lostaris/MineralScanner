@@ -25,6 +25,10 @@ public class MineralScannerPlayerListener extends PlayerListener {
 	
 	public void onPlayerItem(PlayerItemEvent event) {
 		player = event.getPlayer();
+		if (!plugin.isAllowed(player, "scan")) {
+			return;
+		}
+		
 		if (player.getItemInHand().getTypeId() != Integer.valueOf(getScanItem())) {
 			return;
 		} else {
